@@ -1,0 +1,18 @@
+{
+  "name": "声迹 · 本地多人语音转写",
+  "short_name": "声迹",
+  "description": "在本机运行的多人语音转写与说话人区分工具",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f5f5ff",
+  "theme_color": "#7563cf",
+  "icons": [
+    {
+      "src": "/app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

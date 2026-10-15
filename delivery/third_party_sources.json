@@ -1,0 +1,84 @@
+{
+  "observed_on": "2026-10-15",
+  "scope": "Existing checkout identities and separate patches, not a third-party redistribution approval or installer",
+  "sources": [
+    {
+      "name": "FireRedASR2S",
+      "local_relative_path": "packages/FireRedASR2S",
+      "upstream_url": "https://github.com/FireRedTeam/FireRedASR2S.git",
+      "commit": "4e7d9aaf4482a47cec1724807026b9b151926eb5",
+      "observed_license": "Apache-2.0",
+      "purpose": "review_aed",
+      "third_party_source_included": false,
+      "tracked_worktree_changes": [
+        "fireredasr2s/__init__.py",
+        "fireredasr2s/fireredasr2/asr.py"
+      ],
+      "license_sha256": "1eb85fc97224598dad1852b5d6483bbcf0aa8608790dcc657a5a2a761ae9c8c6",
+      "patch": "delivery/patches/FireRedASR2S-aed-lazy-imports.patch",
+      "patch_sha256": "ec523686cc86a8d076ad90ee3b3bf071f5f4828e527852b90c7b59e4b70f0ef6",
+      "modified_file_sha256": {
+        "fireredasr2s/__init__.py": "f5e8bed89cf0ff0544c7a9bc03c5ec29a33bd9eabf816a17ae9c3956acaeb5a9",
+        "fireredasr2s/fireredasr2/asr.py": "d8020c4d4195de5f4e536ef6fae189f6a8b32c3db64608acdde9837337c54e56"
+      }
+    },
+    {
+      "name": "MOSS-Transcribe-Diarize",
+      "local_relative_path": "vendor/MOSS-Transcribe-Diarize",
+      "upstream_url": "https://github.com/OpenMOSS/MOSS-Transcribe-Diarize.git",
+      "commit": "0e3d1403fd8f1f1c674e883ece96b9f630794ebe",
+      "observed_license": "Apache-2.0",
+      "purpose": "review_moss",
+      "third_party_source_included": false,
+      "tracked_worktree_changes": [],
+      "license_sha256": "1eb85fc97224598dad1852b5d6483bbcf0aa8608790dcc657a5a2a761ae9c8c6"
+    },
+    {
+      "name": "3D-Speaker",
+      "local_relative_path": "vendor/3D-Speaker",
+      "upstream_url": "https://github.com/modelscope/3D-Speaker.git",
+      "commit": "065629c313eaf1a01c65c640c46d77e61e9607b4",
+      "observed_license": "Apache-2.0",
+      "purpose": "main_campp",
+      "third_party_source_included": false,
+      "tracked_worktree_changes": [
+        "egs/3dspeaker/speaker-diarization/local/voice_activity_detection.py"
+      ],
+      "license_sha256": "1eb85fc97224598dad1852b5d6483bbcf0aa8608790dcc657a5a2a761ae9c8c6",
+      "dirty_change_note": "Only an old VAD example differs; not imported by the current Main CAMPPlus path; no VAD example patch included."
+    },
+    {
+      "name": "MeetEval",
+      "local_relative_path": "vendor/meeteval",
+      "upstream_url": "https://github.com/fgnt/meeteval",
+      "commit": "184ff17eb77fd6db4aba27a9e303a6a3edb09364",
+      "observed_license": "MIT",
+      "purpose": "review_format",
+      "third_party_source_included": false,
+      "tracked_worktree_changes": [],
+      "license_sha256": "809801401a5fc9fd240595bd96b66731ce2e36bed8bb23f063f6cc50a8922905"
+    },
+    {
+      "name": "MOVER",
+      "local_relative_path": "research/third_party/mover",
+      "upstream_url": "https://github.com/nttcslab-sp/mover.git",
+      "commit": "0de25c42c73fe40f025ff14692b2da557ab225fe",
+      "observed_license": "NTT evaluation agreement; redistribution not cleared",
+      "purpose": "review_fusion",
+      "third_party_source_included": false,
+      "tracked_worktree_changes": [],
+      "license_sha256": "32070b80604779914945b16e130fdcb048278f6034223ef7d9bfad7e8be894ef",
+      "distribution_status": "Blocked pending applicable permission; source, native binaries and checkout excluded."
+    },
+    {
+      "name": "SpyDER",
+      "version": "0.4.1",
+      "upstream_url": "https://pypi.org/project/spy-der/0.4.1/",
+      "local_relative_path": "research/third_party/spy-der-0.4.1",
+      "source_archive_sha256": null,
+      "source_and_native_binaries_included": false,
+      "license_sha256": "deb81193750914c256ae8e3ec5402b08b56bec79a760cd18b5963faa3da480d8",
+      "runtime_note": "Current cp311-win_amd64 MinGW extension requires ABI/DLL preparation; not portable by copying Python code."
+    }
+  ]
+}

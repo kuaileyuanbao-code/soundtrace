@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#7563cf">
+  <meta name="description" content="在本机运行的多人语音转写与说话人区分工具">
+  <title>声迹 - 多人语音转写</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="app-icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="声迹首页"><span>声</span><strong>声迹</strong></a>
+    <div class="top-actions">
+      <button class="local-state" id="serviceState" type="button" title="查看本地服务状态"><i></i><span id="serviceStateText">正在连接后端</span></button>
+      <button class="quiet-button" id="voiceprintButton">声纹库</button>
+      <button class="quiet-button" id="historyButton">历史记录</button>
+      <button class="quiet-button" id="openResultButton">打开结果</button>
+      <button class="dark-button" id="exportButton">导出 JSON</button>
+      <button class="quiet-button" id="exportTextButton" hidden>导出 TXT</button>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="intro">
+      <div><p class="kicker">多人语音转写</p><h1>把录音整理成清楚的对话</h1></div>
+      <p>上传或录制音频，转写为文字，或整理为带人物和时间的对话。</p>
+    </section>
+
+    <section class="upload-band">
+      <div class="file-icon">♪</div>
+      <div class="file-copy"><strong id="recordingName">选择一段录音</strong><span id="recordingMeta">支持 WAV、MP3、FLAC、OGG</span></div>
+      <label class="mode-picker" for="modeSelect"><span>识别模式</span><select id="modeSelect"><option value="main" selected>统一识别 · 推荐</option><option value="review">精细复核 · 耗时更长</option><option value="fast">快速预览</option><option value="text">纯文字转写</option></select><select id="speakerCountSelect" aria-label="已知说话人数" title="已知人数可辅助说话人区分"><option value="0" selected>自动</option><option value="1">1 人</option><option value="2">2 人</option><option value="3">3 人</option><option value="4">4 人</option><option value="5">5 人</option><option value="6">6 人</option></select><span class="voiceprint-switch" title="使用声纹库中的已选成员"><input id="useVoiceprints" type="checkbox"><span id="voiceprintSwitchText">声纹</span></span></label>
+      <button class="quiet-button mic-button" id="micButton" type="button" aria-label="开始话筒录音" aria-pressed="false" title="点击开始录音，再次点击结束并自动识别"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15.5a3.5 3.5 0 0 0 3.5-3.5V6a3.5 3.5 0 0 0-7 0v6a3.5 3.5 0 0 0 3.5 3.5Zm-6-4a6 6 0 0 0 12 0M12 17.5V21m-3 0h6"/></svg><span class="mic-label">话筒</span></button>
+      <button class="quiet-button" id="openAudioButton">选择音频</button>
+      <button class="primary-button" id="transcribeButton">开始识别</button>
+      <input id="audioInput" type="file" accept="audio/wav,audio/mpeg,audio/flac,audio/ogg,.wav,.mp3,.flac,.ogg" hidden>
+      <input id="resultInput" type="file" accept=".json,application/json" hidden>
+      <audio id="audioPlayer"></audio>
+    </section>
+
+    <p class="mode-hint" id="modeHint">统一识别提供文字、说话人和对齐时间。</p>
+
+    <section class="job-progress" id="jobProgress" hidden aria-live="polite">
+      <div class="progress-copy"><strong id="jobStage">正在准备识别</strong><span id="jobDetail">任务将在本机 GPU 上运行</span></div>
+      <span class="progress-number" id="jobPercent">0%</span>
+      <div class="progress-track"><i id="jobProgressBar"></i></div>
+    </section>
+
+    <section class="player">
+      <button class="play-button" id="masterPlayButton" title="播放或暂停" aria-label="播放或暂停">▶</button>
+      <div class="wave-area"><canvas id="waveform"></canvas><div class="playhead" id="playhead"></div></div>
+      <span class="time"><b id="currentTime">00:00</b> / <span id="durationTime">00:00</span></span>
+      <select id="speedSelect" aria-label="播放速度"><option value="1">1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2×</option></select>
+    </section>
+
+    <section class="transcript-section">
+      <div class="section-head">
+        <div><h2>转写内容</h2><p id="summaryText">4 位说话人 · 8 个片段</p></div>
+        <label class="search"><span>⌕</span><input id="transcriptSearch" type="search" placeholder="搜索文字"></label>
+      </div>
+      <div class="speaker-key" id="speakerKey"></div>
+      <div class="transcript-list" id="transcriptList"></div>
+    </section>
+  </main>
+
+  <dialog class="history-dialog" id="historyDialog">
+    <div class="dialog-head">
+      <div><p>保存在当前电脑</p><h2>识别历史</h2></div>
+      <button class="icon-button" id="closeHistoryButton" type="button" aria-label="关闭历史记录">×</button>
+    </div>
+    <div class="history-note">保存转写文字和时间，不保存原始录音；所有内容都留在本机浏览器中。</div>
+    <div class="history-list" id="historyList"></div>
+    <div class="dialog-foot"><button class="quiet-button danger-button" id="clearHistoryButton" type="button">清空历史</button></div>
+  </dialog>
+
+  <dialog class="history-dialog voiceprint-dialog" id="voiceprintDialog">
+    <div class="dialog-head">
+      <div><p>个性化说话人识别</p><h2>我的声纹库</h2></div>
+      <button class="icon-button" id="closeVoiceprintButton" type="button" aria-label="关闭声纹库">×</button>
+    </div>
+    <div class="history-note">每个人单独录制 15–60 秒自然说话。系统只保存声纹向量，提取完成后立即删除原始录音。</div>
+    <section class="voiceprint-enroll">
+      <label><span>成员姓名</span><input id="voiceprintName" maxlength="24" autocomplete="off" placeholder="例如：小林"></label>
+      <button class="primary-button voiceprint-record" id="voiceprintRecordButton" type="button">开始录入</button>
+      <p id="voiceprintRecordStatus">点击开始后，请连续说几句完整的话；再次点击结束。</p>
+    </section>
+    <div class="voiceprint-list" id="voiceprintList"></div>
+    <div class="dialog-foot voiceprint-foot"><span id="voiceprintSelectionText">尚未选择参与识别的成员</span><button class="quiet-button" id="selectAllVoiceprintsButton" type="button">全选</button></div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "observed_on": "2026-10-15",
+  "default_policy": "Explicit source allowlist only. No models, environments, private recordings, jobs, voiceprints, original predictions or third-party checkouts.",
+  "groups": {
+    "application": [
+      "app/app-icon.svg",
+      "app/app.js",
+      "app/desktop_launcher.py",
+      "app/desktop_stop.py",
+      "app/diarizen_worker.py",
+      "app/index.html",
+      "app/main_worker.py",
+      "app/manifest.webmanifest",
+      "app/model_lifecycle.py",
+      "app/moss_worker.py",
+      "app/performance.py",
+      "app/server.py",
+      "app/styles.css",
+      "app/sw.js",
+      "app/text_transcription.py",
+      "app/unified_engine.py",
+      "app/README.md",
+      "app/PERFORMANCE.md"
+    ],
+    "launcher": [
+      "打开声迹.bat",
+      "关闭声迹.bat"
+    ],
+    "runtime_scripts": [
+      "scripts/firered_raw_to_seglst.py",
+      "scripts/infer_diarizen_diarization.py",
+      "scripts/infer_fireredasr2_aed.py",
+      "scripts/infer_funasr.py",
+      "scripts/infer_moss_transcribe_diarize.py",
+      "scripts/infer_qwen_asr_windows.py",
+      "scripts/map_source_speakers_to_rttm.py",
+      "scripts/map_timestamped_asr_to_speaker_rows.py",
+      "scripts/merge_chunked_seglst.py",
+      "scripts/mover_runtime.py",
+      "scripts/prepare_audio_chunks.py",
+      "scripts/prepare_multichannel_wavs.py",
+      "scripts/relabel_seglst_with_rttm.py",
+      "scripts/replace_text_by_token_alignment.py",
+      "scripts/run_mover_fusion.py",
+      "scripts/run_preservealign_pipeline.py"
+    ],
+    "existing_algorithm_subset": [
+      "project/code/test/packages/ifly_asr_dev017_verified_20260725/code/src/ifly_tcpwer/__init__.py",
+      "project/code/test/packages/ifly_asr_dev017_verified_20260725/code/src/ifly_tcpwer/global_proto.py",
+      "project/code/test/packages/ifly_asr_dev017_verified_20260725/code/src/ifly_tcpwer/io.py",
+      "project/code/test/packages/ifly_asr_dev017_verified_20260725/code/src/ifly_tcpwer/merge.py",
+      "project/code/test/packages/ifly_asr_dev017_verified_20260725/code/src/ifly_tcpwer/text.py"
+    ],
+    "regression_tests": [
+      "app/test_firered_imports.py",
+      "app/test_model_lifecycle.py",
+      "app/test_modes.py",
+      "app/test_performance.py",
+      "app/test_speaker_prototypes.py",
+      "app/test_startup.py",
+      "app/test_text.py",
+      "app/test_unified.py",
+      "app/test_modes_frontend.cjs"
+    ],
+    "regression_source_references": [
+      "app/validation/firered_20261014/before_sources/firered_asr.py",
+      "app/validation/firered_20261014/before_sources/infer_fireredasr2_aed.py",
+      "app/validation/firered_20261014/before_sources/server.py"
+    ],
+    "source_governance": [
+      ".gitignore",
+      ".gitattributes",
+      "README.md",
+      "tools/source_baseline.py",
+      "delivery/source_selection.json",
+      "delivery/SOURCE_BASELINE.md",
+      "delivery/DEVELOPMENT_HISTORY.md",
+      "delivery/THIRD_PARTY.md",
+      "delivery/REVIEW_STATUS.md",
+      "delivery/third_party_sources.json",
+      "delivery/environment-observed.json"
+    ],
+    "third_party_patch_and_license": [
+      "delivery/patches/FireRedASR2S-aed-lazy-imports.patch",
+      "delivery/licenses/FireRedASR2S-LICENSE.txt"
+    ]
+  }
+}
