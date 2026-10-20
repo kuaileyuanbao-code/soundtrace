@@ -63,11 +63,27 @@ class FireRedImportTests(unittest.TestCase):
     def test_review_dispatch_and_resource_guards_unchanged(self):
         old = ast.parse((BEFORE / 'server.py').read_text(encoding='utf8'))
         new = ast.parse((ROOT / 'app/server.py').read_text(encoding='utf8'))
-        def without_source_inventory(tree):
-            tree.body = [n for n in tree.body if not (isinstance(n, ast.Assign)
-                and any(isinstance(t, ast.Name) and t.id == 'OBSERVED_SOURCES' for t in n.targets))]
-            return ast.dump(tree)
-        self.assertEqual(without_source_inventory(old), without_source_inventory(new))
+        def recognition_functions(tree):
+            # Compare every existing function except the retired static index.
+            # HTTP shell/CORS policy is covered by test_static_routes instead.
+            return {n.name: ast.dump(n) for n in tree.body
+                    if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef)) and n.name != 'index'}
+        previous = recognition_functions(old)
+        current = recognition_functions(new)
+        for name, implementation in previous.items():
+            with self.subTest(function=name):
+                self.assertEqual(implementation, current.get(name))
+        def runtime_initializers(tree):
+            initializers = []
+            for node in tree.body:
+                if not isinstance(node, (ast.Assign, ast.AnnAssign)):
+                    continue
+                targets = node.targets if isinstance(node, ast.Assign) else [node.target]
+                if any(isinstance(t, ast.Name) and t.id in {'OBSERVED_SOURCES', 'PUBLIC_ASSETS'} for t in targets):
+                    continue
+                initializers.append(ast.dump(node))
+            return initializers
+        self.assertEqual(runtime_initializers(old), runtime_initializers(new))
 
     def test_missing_audio_fails_without_creating_a_result(self):
         with tempfile.TemporaryDirectory() as folder:

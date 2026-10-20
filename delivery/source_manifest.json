@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "observed_at": "2026-10-15T21:22:15+08:00",
+  "observed_at": "2026-10-16T11:37:45+08:00",
   "scope": "Source-only baseline; not a runtime package; no private recordings or model weights",
   "manifest_self_hash_omitted": true,
   "files": [
@@ -13,8 +13,8 @@
     {
       "path": ".gitignore",
       "category": "source_governance",
-      "bytes": 3606,
-      "sha256": "2503aca01d3f8da02723b9469fe3bb9ecf66fb96fcf38d1daea5bab5b8d1cdff"
+      "bytes": 3665,
+      "sha256": "c701b22126725a873e43bfb62b8820a104e037c59795341e9ecb17aecc24c519"
     },
     {
       "path": "README.md",
@@ -103,8 +103,8 @@
     {
       "path": "app/server.py",
       "category": "application",
-      "bytes": 70416,
-      "sha256": "883501b86cb834621484a9e0bad6be23b050436c850d33b44e9dac110e5eec88"
+      "bytes": 71171,
+      "sha256": "91a9e696d2c20f97e5cf8e5cd06079d17c1da1f09725c969f3e790ddf6e3fb94"
     },
     {
       "path": "app/styles.css",
@@ -115,14 +115,14 @@
     {
       "path": "app/sw.js",
       "category": "application",
-      "bytes": 959,
-      "sha256": "b06c76fe0ed39574433c8176fc0a70aaab0e59bd998cd781cd4a8a10e797f344"
+      "bytes": 1152,
+      "sha256": "b44abbf882ce1feee57e2a5cb5064411d084ac4a5964dd6e3fbbd3ce14afe179"
     },
     {
       "path": "app/test_firered_imports.py",
       "category": "regression_tests",
-      "bytes": 4551,
-      "sha256": "6c1da45ff5dc9b66848decafd42f7021a77f2905dc5ba064c6c5f296599a4eaf"
+      "bytes": 5425,
+      "sha256": "4feaf9196ae729a17d454b97b33af7f7e3d3dc2544adec4297abe26f3f5e205b"
     },
     {
       "path": "app/test_model_lifecycle.py",
@@ -159,6 +159,18 @@
       "category": "regression_tests",
       "bytes": 5431,
       "sha256": "5cbc2be874a7fe2b377c6766b1783778561e72bdae4a247092d1f13da77fe0ed"
+    },
+    {
+      "path": "app/test_static_routes.py",
+      "category": "regression_tests",
+      "bytes": 9266,
+      "sha256": "76584f6793f50dbbe5720c6a91300b921c952792fc7510a0c2546fafefd9d53b"
+    },
+    {
+      "path": "app/test_static_worker.cjs",
+      "category": "regression_tests",
+      "bytes": 3682,
+      "sha256": "eae3b80cff333eda900700f97a66c15bccfbab8d22b6fe84140f73676456131a"
     },
     {
       "path": "app/test_text.py",
@@ -247,8 +259,8 @@
     {
       "path": "delivery/source_selection.json",
       "category": "source_governance",
-      "bytes": 3363,
-      "sha256": "95e5cc7fe6dbe68a8382a0b7331f5ebe64e0873773171c6ff831301ea410f706"
+      "bytes": 3436,
+      "sha256": "f00ae1ae430cd6c69584c1e6d53022fc1043fffc16bc88453c9dbd39f878fbdb"
     },
     {
       "path": "delivery/third_party_sources.json",

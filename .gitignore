@@ -60,6 +60,8 @@
 !/app/test_performance.py
 !/app/test_speaker_prototypes.py
 !/app/test_startup.py
+!/app/test_static_routes.py
+!/app/test_static_worker.cjs
 !/app/test_text.py
 !/app/test_unified.py
 !/app/text_transcription.py

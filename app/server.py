@@ -17,10 +17,8 @@ from pathlib import Path
 
 import numpy as np
 import soundfile as sf
-from fastapi import FastAPI, File, Form, HTTPException, UploadFile
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi import FastAPI, File, Form, HTTPException, Request, UploadFile
 from fastapi.responses import FileResponse
-from fastapi.staticfiles import StaticFiles
 from scipy.signal import resample_poly
 from starlette.concurrency import run_in_threadpool
 
@@ -61,12 +59,8 @@ _main_engine = MainEngine()
 _main_warmup_status = {"status": "idle", "error": None}
 _main_warmup_cancel = None  # Only a background preload has a cancellation token.
 _warmup_request_lock = threading.Lock()
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# The bundled page uses same-origin /api requests. No cross-origin access
+# is required; CORS is not an authentication boundary for the local API.
 
 _model = None
 _model_lock = threading.Lock()
@@ -1625,12 +1619,33 @@ async def transcribe_audio(audio: UploadFile = File(...)) -> dict:
         shutil.rmtree(job_dir, ignore_errors=True)
 
 
-@app.get("/")
-def index() -> FileResponse:
-    return FileResponse(APP_DIR / "index.html")
+PUBLIC_ASSETS = {
+    "/": "index.html",
+    "/index.html": "index.html",
+    "/app.js": "app.js",
+    "/styles.css": "styles.css",
+    "/app-icon.svg": "app-icon.svg",
+    "/manifest.webmanifest": "manifest.webmanifest",
+    "/sw.js": "sw.js",
+}
 
 
-app.mount("/", StaticFiles(directory=APP_DIR), name="static")
+def public_asset(request: Request) -> FileResponse:
+    # Map exact URLs to fixed files, never mount a directory containing data.
+    filename = PUBLIC_ASSETS.get(request.url.path)
+    if filename is None:
+        raise HTTPException(status_code=404, detail="Not Found")
+    path = APP_DIR / filename
+    if path.is_symlink() or path.resolve().parent != APP_DIR.resolve() or not path.is_file():
+        raise HTTPException(status_code=404, detail="Not Found")
+    headers = {"Cache-Control": "no-cache"} if filename == "sw.js" else None
+    return FileResponse(path, headers=headers)
+
+
+for asset_url in PUBLIC_ASSETS:
+    app.add_api_route(asset_url, public_asset, methods=["GET", "HEAD"], include_in_schema=False)
+
+
 atexit.register(_main_engine.stop)
 
 
