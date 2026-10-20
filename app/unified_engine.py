@@ -6,6 +6,7 @@ are read here. The review route is a new product pipeline, not clean-v2 replay.
 from __future__ import annotations
 
 import json
+import hashlib
 import math
 import os
 import queue
@@ -37,7 +38,8 @@ def native_model_path(path):
     """Native SentencePiece on Windows needs an ASCII directory name."""
     if os.name != "nt" or str(path).isascii():
         return path
-    link = Path(os.environ["LOCALAPPDATA"]) / "Soundtrace/runtime/models" / path.name
+    model_key = hashlib.sha256(str(path.resolve()).encode("utf-8")).hexdigest()[:12]
+    link = Path(os.environ["LOCALAPPDATA"]) / "Soundtrace/runtime/models" / model_key / path.name
     link.parent.mkdir(parents=True, exist_ok=True)
     if link.exists():
         if link.resolve() != path.resolve():

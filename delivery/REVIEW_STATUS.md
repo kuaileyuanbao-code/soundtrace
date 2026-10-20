@@ -1,23 +1,11 @@
-# Review：授权与交付状态
+# Review 配置与交付范围
 
-截至 2026-10-15，现有本机 Review 继续保留原流程：Main → MOSS → FireRed → MOVER。本轮没有关闭功能、替换融合算法或把 Review 降成 Main。
+更新日期：2026-10-20。
 
-## 已查到的事实
+开发工作区的 Review 路线为 Main → MOSS → FireRed → MOVER，保持现有识别参数及融合规则。当前 Windows 运行包提供 Text/Fast/Main；Review 保留扩展入口，依赖未配置时返回明确错误，不切换到其他模式。
 
-- 当前 MOVER 上游为 `nttcslab-sp/mover`，本地 commit 记录在 `third_party_sources.json`。
-- 本地 LICENSE 标题是评估用途软件协议，内容包含内部非商业评估及第三方转交限制；未发现归档的额外分发授权。此前已与官方同名文件核对，本轮再次访问官网超时，不能声称取得了新的授权。
-- [官方 LICENSE](https://github.com/nttcslab-sp/mover/blob/main/LICENSE) 的这些限制不因项目参加比赛、依赖包含 MIT 组件或代码公开可读而自动消失。
-- 当前还依赖 Windows CPython 3.11 的 SpyDER 扩展与本机 MinGW DLL 查找，单独取得许可也不会自动完成技术部署。
+源码仓库保存本项目的 Review 调用代码、FireRed 按需导入补丁与第三方来源记录。Windows 包未附 MOSS/FireRed 模型、MOSS 环境、MOVER 实现及其原生构建。
 
-## 本次源码基线的边界
+MOVER 上游为 [nttcslab-sp/mover](https://github.com/nttcslab-sp/mover)，所用版本见 third_party_sources.json。其 [LICENSE](https://github.com/nttcslab-sp/mover/blob/main/LICENSE) 为评估用途协议，包含第三方转交条件；本次未取得额外分发授权，因此该组件未纳入源码仓库及运行包。
 
-记录自有 Review 调用脚本和接口，同时记录第三方来源和阻碍。MOVER checkout、其实现副本、SpyDER 构建二进制和模型均不加入基线或导出目录。
-
-因此，本基线不是可直接运行的完整四模式发行包。当前服务器还有启动时读取 FireRed 源码哈希的依赖；外部源码的准备不是仅点选 Review 时才需要。没有把缺失依赖隐藏为“离线独立软件已交付”。
-
-## 后续需要明确的选择
-
-1. 若能取得覆盖参赛评审使用及所需分发方式的适用授权，保存书面依据，再验证 Review 的目标机环境、内存和原生依赖。
-2. 若来不及确认授权，应由团队明确本次交付范围，并保证界面、说明、仓库和视频一致；不能仅在打包时漏掉组件，也不能静默更换执行路线。
-
-本轮不替用户联系组委会或权利人，不代表已获许可，也不擅自做上述功能取舍。让评委自行下载 MOVER 并不是已确认可行的授权解决方案。
+服务已支持缺少可选 Review 源码时正常启动 Text/Fast/Main。未来如单独配置 Review，需要同时核对组件授权、模型环境、SpyDER ABI 与 DLL、系统内存和 GPU 资源。

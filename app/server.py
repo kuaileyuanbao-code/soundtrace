@@ -34,7 +34,7 @@ MAX_UPLOAD_BYTES = 512 * 1024 * 1024
 ALLOWED_SUFFIXES = {".wav", ".flac", ".mp3", ".ogg"}
 sys.path.insert(0, str(SCRIPTS_DIR))
 
-from unified_engine import MainEngine, WarmupCancelled, missing_requirements, review_recording, validate_rows, stop_worker_process  # noqa: E402
+from unified_engine import MainEngine, WarmupCancelled, missing_requirements, review_recording, validate_rows, stop_worker_process, native_model_path  # noqa: E402
 from performance import StageTimings, model_state
 from model_lifecycle import GIB, fast_state, move_fast, tensor_bytes, memory_budget
 
@@ -44,7 +44,8 @@ OBSERVED_SOURCES = ("app/main_worker.py", "app/unified_engine.py", "app/server.p
                     "packages/FireRedASR2S/fireredasr2s/__init__.py",
                     "packages/FireRedASR2S/fireredasr2s/fireredasr2/asr.py",
                     "scripts/infer_fireredasr2_aed.py", "scripts/run_mover_fusion.py")
-SOURCE_SHA256 = {p: hashlib.sha256((ROOT / p).read_bytes()).hexdigest() for p in OBSERVED_SOURCES}
+SOURCE_SHA256 = {p: hashlib.sha256((ROOT / p).read_bytes()).hexdigest()
+                 if (ROOT / p).is_file() else None for p in OBSERVED_SOURCES}
 
 
 def infer_file(*args, **kwargs):
@@ -133,6 +134,16 @@ def safe_session_id(filename: str | None) -> str:
     return safe[:80] or "audio"
 
 
+def fast_model_path(variable: str, default: str) -> str:
+    configured = os.environ.get(variable)
+    if not configured:
+        return default
+    path = Path(configured)
+    if not path.is_dir():
+        raise FileNotFoundError(f"缺少本地模型目录：{path}")
+    return str(native_model_path(path))
+
+
 def load_model():
     global _model
     with _model_lock:
@@ -140,10 +151,10 @@ def load_model():
             from funasr import AutoModel
 
             _model = AutoModel(
-                model="iic/SenseVoiceSmall",
-                vad_model="fsmn-vad",
+                model=fast_model_path("SOUNDTRACE_FAST_ASR_MODEL", "iic/SenseVoiceSmall"),
+                vad_model=fast_model_path("SOUNDTRACE_FAST_VAD_MODEL", "fsmn-vad"),
                 vad_kwargs={"max_single_segment_time": 12000},
-                spk_model="cam++",
+                spk_model=fast_model_path("SOUNDTRACE_FAST_SPEAKER_MODEL", "cam++"),
                 device=os.environ.get("SOUNDTRACE_DEVICE", "cuda:0"),
                 disable_update=True,
             )
@@ -269,7 +280,7 @@ def load_speaker_model():
             from funasr import AutoModel
 
             _speaker_model = AutoModel(
-                model="cam++",
+                model=fast_model_path("SOUNDTRACE_FAST_SPEAKER_MODEL", "cam++"),
                 device=os.environ.get("SOUNDTRACE_DEVICE", "cuda:0"),
                 disable_update=True,
             )
@@ -1328,6 +1339,7 @@ def health() -> dict:
     return {
         "ok": True,
         "service": "声迹本地转写服务",
+        "instance_id": os.environ.get("SOUNDTRACE_INSTANCE_ID"),
         "version": "3.0",
         "busy": any(job.get("status") == "running" for job in _jobs.values()),
         "fast": {

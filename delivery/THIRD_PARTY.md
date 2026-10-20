@@ -1,6 +1,6 @@
 # 第三方源码、模型与本地修改
 
-2026-10-15 来源盘点；不是全软件供应链的最终授权结论。精确源码版本见 `third_party_sources.json`，此仓库不包含第三方 checkout、模型或运行时。
+2026-10-15 来源盘点，2026-10-20 更新交付情况。精确源码版本见 `third_party_sources.json`；源码仓库保存来源与补丁，运行包另附相应依赖、模型和许可。
 
 | 组件 | 用途 | 本次记录与处理 |
 | --- | --- | --- |
@@ -19,7 +19,7 @@
 - SenseVoiceSmall：需核对实际模型快照的 FunASR 模型条款，不能仅因 Python 代码 Apache 就把权重一律标为 Apache。
 - MOSS、FireRed AED：先前核对模型卡为 Apache-2.0，发布时仍需锁定完整快照并附许可证。
 
-本轮没有为大模型文件重新做全量 SHA 或下载锁定，所以模型 id 不是已完成的可复现模型 lock。Python 环境观察也不等于所有 wheel 与原生运行时已通过分发审查。
+2026-10-20 的三模式运行包已固定七组实际模型文件，并在 PACKAGE_MANIFEST.json 中记录文件散列；licenses/models 保存模型许可，ENVIRONMENTS.json 保存两套随包环境的依赖名称与版本。
 
 ## FireRed 补丁
 
@@ -38,4 +38,4 @@
 
 源码仓库未自动设定自有代码的统一开源许可证。原算法赛 `ifly_tcpwer` 子集按已有成果保存，团队应确认其权属及本次工程增量。私人录音、声纹和比赛数据均不因此获得传播许可。
 
-其他 Python 库、GPU 运行时、DLL、模型 NOTICE 仍须在制作运行包时完成汇总；本目录不是完整 SBOM 的替代。Review 的独立阻碍见 [REVIEW_STATUS.md](REVIEW_STATUS.md)。
+Windows 包保留 Python、依赖目录中的许可证，以及 NVIDIA 模型 NOTICE 和模型协议；包根 THIRD_PARTY.md 汇总本次分发组件。源码与运行包关系见 [WINDOWS_DELIVERY.md](WINDOWS_DELIVERY.md)，Review 范围见 [REVIEW_STATUS.md](REVIEW_STATUS.md)。

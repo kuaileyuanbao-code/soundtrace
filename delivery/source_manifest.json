@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "observed_at": "2026-10-16T11:37:45+08:00",
+  "observed_at": "2026-10-20T19:01:40+08:00",
   "scope": "Source-only baseline; not a runtime package; no private recordings or model weights",
   "manifest_self_hash_omitted": true,
   "files": [
@@ -13,14 +13,14 @@
     {
       "path": ".gitignore",
       "category": "source_governance",
-      "bytes": 3665,
-      "sha256": "c701b22126725a873e43bfb62b8820a104e037c59795341e9ecb17aecc24c519"
+      "bytes": 3873,
+      "sha256": "0b6be29482b90522ebf3286f9c51d55e8097ecf1e98ff3fce4b29b6ae37132dd"
     },
     {
       "path": "README.md",
       "category": "source_governance",
-      "bytes": 2567,
-      "sha256": "af51f98a7efc7dc7f91020e75e856346b1dd06b957494d0af30275e907e08e30"
+      "bytes": 2618,
+      "sha256": "12ab4fd1343bcc0b74bae77c0ae666c0a008087e83eb8673447edf4638edb85d"
     },
     {
       "path": "app/PERFORMANCE.md",
@@ -103,8 +103,8 @@
     {
       "path": "app/server.py",
       "category": "application",
-      "bytes": 71171,
-      "sha256": "91a9e696d2c20f97e5cf8e5cd06079d17c1da1f09725c969f3e790ddf6e3fb94"
+      "bytes": 71809,
+      "sha256": "254e8d6b5d31c8a14accd238b6c72c52fa5cc6e37f106f409fcec9d834df48c7"
     },
     {
       "path": "app/styles.css",
@@ -121,8 +121,8 @@
     {
       "path": "app/test_firered_imports.py",
       "category": "regression_tests",
-      "bytes": 5425,
-      "sha256": "4feaf9196ae729a17d454b97b33af7f7e3d3dc2544adec4297abe26f3f5e205b"
+      "bytes": 7053,
+      "sha256": "715e0735b4a338c27fd21512cbc74dbb4226d9ab693de8de5e548616d588f91d"
     },
     {
       "path": "app/test_model_lifecycle.py",
@@ -193,8 +193,8 @@
     {
       "path": "app/unified_engine.py",
       "category": "application",
-      "bytes": 25806,
-      "sha256": "1d69c07a1f2a78cd8aa9ce3d327fe8141e336b803aa9df31a5118824e5e5c81e"
+      "bytes": 25918,
+      "sha256": "40575df026224923fd884b85013fec4f995504384b587eea4d6e5641cf9621d6"
     },
     {
       "path": "app/validation/firered_20261014/before_sources/firered_asr.py",
@@ -217,26 +217,32 @@
     {
       "path": "delivery/DEVELOPMENT_HISTORY.md",
       "category": "source_governance",
-      "bytes": 1765,
-      "sha256": "4e3081c117ff96d182ec56e8ae7df62b35598cd01f436e268620d173cedf7232"
+      "bytes": 1873,
+      "sha256": "8d7b0af263855f4edce04d1b1ca1ce09c0fac3a0556bc525e9f25545c6af887c"
     },
     {
       "path": "delivery/REVIEW_STATUS.md",
       "category": "source_governance",
-      "bytes": 1974,
-      "sha256": "851ae3a79cfddb0ccb95049976b5a38d4255822aeff109f67678681f591e4c79"
+      "bytes": 1064,
+      "sha256": "38055cf8efd6b499ecb7e09646a753a3e2484b1add052e93f047f04deeff743f"
     },
     {
       "path": "delivery/SOURCE_BASELINE.md",
       "category": "source_governance",
-      "bytes": 3868,
-      "sha256": "2f851fb48e31ec142858549e57ae44275ca5537f8db651607e4797ef161536ef"
+      "bytes": 2009,
+      "sha256": "b1125ee27057816efa8f03c4feeb30c5b875a308209d7c95ce2a327aa7eef1ab"
     },
     {
       "path": "delivery/THIRD_PARTY.md",
       "category": "source_governance",
-      "bytes": 3456,
-      "sha256": "ed1388422c85c52a01dee2090f2b01c2a2fc82364d7c5b093f42edafe9683404"
+      "bytes": 3600,
+      "sha256": "c0dfaba730013f7a0f895a054d975694d40e8e83d86d4b62087aca19198c58f7"
+    },
+    {
+      "path": "delivery/WINDOWS_DELIVERY.md",
+      "category": "windows_delivery_documentation",
+      "bytes": 2521,
+      "sha256": "08d76774ab06dd134ca5f80f6567d76aa5fe6bbd923e6436a0927a652d1bcf3e"
     },
     {
       "path": "delivery/environment-observed.json",
@@ -259,14 +265,20 @@
     {
       "path": "delivery/source_selection.json",
       "category": "source_governance",
-      "bytes": 3436,
-      "sha256": "f00ae1ae430cd6c69584c1e6d53022fc1043fffc16bc88453c9dbd39f878fbdb"
+      "bytes": 3774,
+      "sha256": "e0206836bf1030c4a57c32a4335e38639ebb8e0b2793007ae5fb8cc6bc0aa62d"
     },
     {
       "path": "delivery/third_party_sources.json",
       "category": "source_governance",
       "bytes": 4007,
       "sha256": "d8b0e61a3b342d2cc0976b8b7963f116d9608871be3685bfc4ffba59bafd7bcf"
+    },
+    {
+      "path": "delivery/windows_release_20261020.json",
+      "category": "windows_delivery_documentation",
+      "bytes": 2070,
+      "sha256": "52e5747d16ccea468f43267a9da24ca4dd3c2a364d29be6f55a68851eba8aa13"
     },
     {
       "path": "project/code/test/packages/ifly_asr_dev017_verified_20260725/code/src/ifly_tcpwer/__init__.py",
@@ -395,10 +407,34 @@
       "sha256": "fad1dca65b249b3c368d1085c78b3982810c9fa6cac007e7685c1a654ef79512"
     },
     {
+      "path": "tools/build_windows_delivery.py",
+      "category": "windows_delivery_tools",
+      "bytes": 16252,
+      "sha256": "b4a68c3e077be0fc885c7b9eb34ccb31c53c1b82b063ec42f0010282b08ed4d8"
+    },
+    {
+      "path": "tools/portable_launcher.py",
+      "category": "windows_delivery_tools",
+      "bytes": 7641,
+      "sha256": "fa37e2190a507ca00d7add9b9d163120011fbaf5ce71af4dae2fb86a2de48938"
+    },
+    {
       "path": "tools/source_baseline.py",
       "category": "source_governance",
       "bytes": 7230,
       "sha256": "d714b9b72633b3c20df24b1aa1b3d5b99e2fa18002ec9485cba03804360959e3"
+    },
+    {
+      "path": "tools/test_windows_delivery.py",
+      "category": "windows_delivery_tools",
+      "bytes": 5083,
+      "sha256": "51c60ecceb3691e33946123d2c83c347cf0dca4f2319b784fb7deedd5f18a381"
+    },
+    {
+      "path": "tools/verify_windows_package.py",
+      "category": "windows_delivery_tools",
+      "bytes": 1612,
+      "sha256": "9115e79bb33fed00a91b8b988791f6da1d94035580d84bcca07e7e069cec6a08"
     },
     {
       "path": "关闭声迹.bat",

@@ -103,3 +103,9 @@
 !/tools/source_baseline.py
 !/关闭声迹.bat
 !/打开声迹.bat
+!/tools/build_windows_delivery.py
+!/tools/portable_launcher.py
+!/tools/verify_windows_package.py
+!/tools/test_windows_delivery.py
+!/delivery/WINDOWS_DELIVERY.md
+!/delivery/windows_release_20261020.json

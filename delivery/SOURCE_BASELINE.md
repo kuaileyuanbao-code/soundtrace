@@ -1,59 +1,38 @@
-# 源码基线与导出
+# 源码清单与导出
 
-2026-10-15。本轮保存现有可运行代码的真实版本，不修改识别算法、模型参数、缓存或部署路径。Git 作者署名“快乐源宝”，邮箱留空；只配置此仓库，不使用虚构邮箱，不上传远程。
+首个真实基线创建于 2026-10-15，当前说明更新于 2026-10-20。私有源码仓库为 https://github.com/kuaileyuanbao-code/soundtrace 。
 
-## 范围
+## 文件组织
 
-`source_selection.json` 是显式文件清单，`source_manifest.json` 记录其大小、类别和 SHA-256。根 `.gitignore` 按同一清单生成，默认不跟踪新出现的文件；已有纳入版本控制的文件后续修改仍正常显示。
+source_selection.json 是显式文件清单；source_manifest.json 记录大小、类别和 SHA256。.gitignore 只允许跟踪选定文件，新增文件需先核对再加入。gitattributes 保留文件字节与换行，便于核对实际运行版本。
 
-保留：
+仓库包含应用、四路线调用脚本、原算法赛 ifly_tcpwer 必需子集、回归测试、FireRed 补丁、第三方来源、Windows 构建和校验工具。FireRed 历史回归参照是测试资料，真实 Git 历史由提交记录保存。
 
-- app 根部生产源码、前端静态资源、启动/停止 BAT、功能和计时说明。
-- 四路线实际调用的本项目脚本，以及仍由旧兼容函数引用的少量脚本。保留旧代码不表示旧 DiariZen 模式属于本次声明的四模式。
-- Main 实际导入的原算法赛 `ifly_tcpwer` 源码子集，保持当前相对路径。
-- 八份 Python 测试和 JS 模式测试；FireRed 回归所需的三份旧源码参照。参照源码不是本项目 Git 历史，不把它们当成过去提交。
-- 第三方固定版本信息、FireRed 本地改动补丁、适用许可副本，以及整理和检查工具。
+用户录音、声纹、任务结果、日志、模型、Python 环境、比赛数据及第三方完整 checkout 分别管理，不进入源码清单。运行包与源码仓库的对应关系见 WINDOWS_DELIVERY.md 与 windows_release_20261020.json。
 
-排除：
-
-- 所有 Python 环境、权重、缓存、音频/视频、声纹向量、任务结果、浏览器资料、日志、私人测试输出。
-- 原算法赛训练数据、标注、预测结果、其他实验、压缩包和大体积历史快照。
-- 所有第三方源码仓库及嵌套 `.git`；不以 gitlink 或伪造子模块形式纳入。来源和版本见锁定清单。
-- MOVER 实现及原生扩展/DLL；Review 完整交付仍有授权和环境问题。
-
-`app/README.md` 还保留作者工作区的历史测速入口；这些历史脚本及其私有素材未全部纳入本次基线，不能把该说明中的每一个旧命令当作纯源码检出即可执行的验收步骤。当前纳入的测试入口以根 README 和显式清单为准。
-
-根 `.gitattributes` 保留文件字节，不统一换行，保证源码 SHA 与实际运行文件相符。未赋予所有代码统一开源许可证。
-
-## 检查和后续修改
+## 检查
 
 ```powershell
 python tools/source_baseline.py --check
 ```
 
-检查文件存在、路径仍在工作区内、没有重解析路径跳转、类型和大小符合边界、SHA 与清单一致，并扫描常见密钥和作者机器绝对路径模式。有限模式扫描不能代替团队对所有数据权属及秘密的人工核对。
-
-如后续确实修改或增加代码，应更新 `source_selection.json`，按需同步 Git allowlist，再执行：
+工具检查路径、重解析跳转、文件类型、大小及散列，并扫描常见密钥和作者机器绝对路径。修改清单内文件后执行：
 
 ```powershell
 python tools/source_baseline.py --refresh
 python tools/source_baseline.py --check
 ```
 
-refresh 只重建源文件清单，不修改源代码、不安装依赖、不启动模型。新文件未纳入 `.gitignore` allowlist 时，普通 `git add` 仍会拒绝它，避免误把整个工作区加入仓库。
+新增文件同时加入 source_selection.json 与 .gitignore。检查工具只处理源码，不安装依赖或加载模型。
 
-## 导出源码目录
+## 导出
 
-在真实提交完成后：
+真实提交完成后执行：
 
 ```powershell
 python tools/source_baseline.py --export
 ```
 
-工具先验证清单与当前 Git HEAD 的文件内容相同，随后在 `delivery/exports/` 下创建新的源码目录，保存相对层级和 `SOURCE_SNAPSHOT.json` 中的真实 commit。不会复制 `.git`、模型或个人数据，不覆盖旧导出目录。
+工具确认清单与 HEAD 一致，在 delivery/exports 下创建新目录，保存相对层级及 SOURCE_SNAPSHOT.json 的 commit；保留旧导出。源码快照供代码检查，实际运行使用独立 Windows 运行包。
 
-导出目录是供核对的**源码快照**，不是安装包；没有第三方源码和环境时不能承诺直接启动。原工作区的环境、权重和个人数据没有移动或删除。
-
-`environment-observed.json` 是现有三环境的名称/版本观察，不是经验证可安装的 lock 文件，不应不加筛选地拿来安装全部包。MOSS editable、Fast 用户缓存、原生 DLL 和中文路径兼容仍待部署轮次处理。
-
-本轮不重新跑识别速度或 GPU 准确率，主要验证选中文件完整性、第三方补丁可重建、导出一致及生产源码未变。
+environment-observed.json 保存开发环境的历史观察；运行包 ENVIRONMENTS.json 保存随包环境的具体依赖。源码测试入口见根 README，app/README.md 中的历史实验入口保留其原始语境。

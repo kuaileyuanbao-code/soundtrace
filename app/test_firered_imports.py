@@ -63,6 +63,33 @@ class FireRedImportTests(unittest.TestCase):
     def test_review_dispatch_and_resource_guards_unchanged(self):
         old = ast.parse((BEFORE / 'server.py').read_text(encoding='utf8'))
         new = ast.parse((ROOT / 'app/server.py').read_text(encoding='utf8'))
+        # Deployment adds explicit local model paths and an instance identifier;
+        # compare the historical recognition flow with its original defaults.
+        expected_defaults = {
+            'SOUNDTRACE_FAST_ASR_MODEL': 'iic/SenseVoiceSmall',
+            'SOUNDTRACE_FAST_VAD_MODEL': 'fsmn-vad',
+            'SOUNDTRACE_FAST_SPEAKER_MODEL': 'cam++',
+        }
+        test = self
+        class DeploymentDefaults(ast.NodeTransformer):
+            def visit_Call(self, node):
+                if isinstance(node.func, ast.Name) and node.func.id == 'fast_model_path':
+                    test.assertEqual(len(node.args), 2)
+                    test.assertEqual(node.args[1].value, expected_defaults[node.args[0].value])
+                    test.assertEqual(node.keywords, [])
+                    return node.args[1]
+                return self.generic_visit(node)
+
+            def visit_Dict(self, node):
+                for i in reversed(range(len(node.keys))):
+                    key = node.keys[i]
+                    if isinstance(key, ast.Constant) and key.value == 'instance_id':
+                        test.assertEqual(ast.dump(node.values[i]), ast.dump(ast.parse(
+                            'os.environ.get("SOUNDTRACE_INSTANCE_ID")', mode='eval').body))
+                        del node.keys[i]
+                        del node.values[i]
+                return self.generic_visit(node)
+        new = DeploymentDefaults().visit(new)
         def recognition_functions(tree):
             # Compare every existing function except the retired static index.
             # HTTP shell/CORS policy is covered by test_static_routes instead.
@@ -79,7 +106,9 @@ class FireRedImportTests(unittest.TestCase):
                 if not isinstance(node, (ast.Assign, ast.AnnAssign)):
                     continue
                 targets = node.targets if isinstance(node, ast.Assign) else [node.target]
-                if any(isinstance(t, ast.Name) and t.id in {'OBSERVED_SOURCES', 'PUBLIC_ASSETS'} for t in targets):
+                # Source hashes are observations; optional Review files can be
+                # absent in the three-mode distribution. Live startup is tested.
+                if any(isinstance(t, ast.Name) and t.id in {'OBSERVED_SOURCES', 'SOURCE_SHA256', 'PUBLIC_ASSETS'} for t in targets):
                     continue
                 initializers.append(ast.dump(node))
             return initializers

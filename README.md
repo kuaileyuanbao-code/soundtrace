@@ -1,38 +1,43 @@
-# 声迹
+# 声迹 Soundtrace
 
-Windows 本地语音转写与对话整理软件。现有 Text、Fast、Main、Review 四条识别路线，支持音频导入、浏览器麦克风、文字编辑、结果历史与导出。
+声迹是一款面向 Windows 的本地语音转写与对话整理软件，支持文件导入、浏览器录音、文字编辑、历史记录和 TXT/JSON 导出。识别使用本机 NVIDIA GPU，音频与模型在本地处理。
 
-这是从算法赛工作区中明确选取的**源码基线**，不是已经跨机验证的运行包。基础模型、Python 环境、第三方源码、原生运行库、个人录音和声纹均不随本仓库提供。保留的目录层级对应当前生产路径，不要求移动原工作区。
+## 识别路线
 
-- [应用功能、模型路线和已知边界](app/README.md)
-- [源码范围、检查和导出](delivery/SOURCE_BASELINE.md)
-- [第三方来源与补丁](delivery/THIRD_PARTY.md)
-- [Review 授权与交付状态](delivery/REVIEW_STATUS.md)
-- [真实版本历史及已有成果说明](delivery/DEVELOPMENT_HISTORY.md)
+| 模式 | 处理路线 | 输出 |
+| --- | --- | --- |
+| Text 纯文字转写 | Qwen3-ASR-1.7B | 连续正文 |
+| Fast 快速多人识别 | SenseVoiceSmall / FunASR、FSMN-VAD、CAM++ | 文字、人物、时间 |
+| Main 标准多人识别 | Qwen3-ASR、ForcedAligner、Sortformer、CAM++ | 文字、人物、时间 |
+| Review 多模型精细复核 | Main、MOSS、FireRed、MOVER | 多路复核与融合结果 |
 
-## 当前状态
+2026-10-20 的 Windows 目录式运行包提供 **Text、Fast、Main**，随包包含 Python、两套环境和七组模型。Review 保留扩展入口，未配置组件时明确提示。开发工作区保留四路线版本。
 
-当前作者电脑已有四模式真实 GPU 和主要交互验证。2026-10-15 对指定人数但长发言原型覆盖不足的双人错误进行了限定修复，两份原录音回归成功；不能保证任意双人或长会议录音的人物全部正确。
+## Windows 使用
 
-Main/Text 暖态较快，首次模型准备仍可能等待几十秒。Review 开销及内存压力更高，其 MOVER 依赖的第三方分发条件尚未解决。源码还保留本机环境查找规则，依赖准备和跨机部署属于后续任务。
+完整解压运行包，双击“打开声迹.bat”，选择模式并导入音频；使用完毕双击“关闭声迹.bat”。运行包可整体移动，启动器自动调整包内环境路径。
 
-## 使用与验证入口
+验证设备为 Windows、RTX 5070 Laptop GPU（8GB 显存）、32GB 内存；目标机需兼容 CUDA 12.8 的 NVIDIA 驱动及 Edge/Chrome。首次识别包含模型加载，后续任务复用已加载模型。
 
-作者当前已配置电脑可双击 `打开声迹.bat`，用后执行 `关闭声迹.bat`。新电脑不能直接假定双击即可运行；须先准备依赖、权重及兼容运行时。尤其 `server.py` 启动时会读取 FireRed 两个源码文件的哈希，缺少第三方源码时即使只选 Text 也不能按当前代码直接启动。
+运行包在同机独立目录、中文和空格路径、空白配置及模型缓存下完成真实 GPU 验证，六次任务结果与开发版本一致。详细环境、计时口径与验证范围见 [Windows 交付说明](delivery/WINDOWS_DELIVERY.md)。另一台电脑的实际部署待验证。
 
-在已按现有版本准备环境和第三方源码的电脑中：
+## 源码与测试
 
-```powershell
-.venv/Scripts/python.exe -X utf8 -m unittest discover -s app -p 'test_*.py' -v
-node app/test_modes_frontend.cjs
-```
-
-Python 测试需要现有开发依赖，路由测试还需要 Node.js 在 PATH；这是模型叶子被模拟的回归，不是 GPU 端到端测试。涉及私人原音的两项回归在纯源码检出时按设计跳过，未公开其音频或完整输出。正式发布仍欠独立环境安装与实际部署验证。
-
-源码整理工具只使用 Python 标准库：
+本仓库保存应用源码、回归测试、部署工具和组件来源。模型、Python 环境与用户音频通过独立运行包管理。
 
 ```powershell
 python tools/source_baseline.py --check
+.venv/Scripts/python.exe -X utf8 -m unittest discover -s app -p 'test_*.py' -v
+.venv/Scripts/python.exe -X utf8 -m unittest discover -s tools -p 'test_windows_delivery.py' -v
+node app/test_modes_frontend.cjs
 ```
 
-本次基线不自动改变自有代码的许可，也不授予第三方组件额外权利。团队真实贡献、算法赛既有成果及 AI 辅助开发范围须如实披露；后续是否公开仓库由团队决定。
+应用测试需要开发依赖，部分测试需要 Node.js；GPU 验证记录与自动化回归分别记录。
+
+- [源码清单、检查与导出](delivery/SOURCE_BASELINE.md)
+- [真实开发历史、团队贡献及 AI 辅助范围](delivery/DEVELOPMENT_HISTORY.md)
+- [组件来源、模型与补丁](delivery/THIRD_PARTY.md)
+- [Review 配置与交付范围](delivery/REVIEW_STATUS.md)
+- [应用与历史实验说明](app/README.md)
+
+源码仓库当前保持私有，评审访问权限由团队安排。

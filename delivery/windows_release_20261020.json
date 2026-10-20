@@ -1,0 +1,59 @@
+{
+  "release_date": "2026-10-20",
+  "archive_name": "Soundtrace Windows 20261020.zip",
+  "archive_bytes": 19313286445,
+  "archive_sha256": "055e7ca12e6e78db9d70e8850dde0c6b9a6ab72f824c24af22907b88761a872b",
+  "build_base_commit": "627950c839caae17ae62d739dfceae18d806ba2e",
+  "enabled_modes": [
+    "text",
+    "fast",
+    "main"
+  ],
+  "source_correspondence": [
+    {
+      "source": "app/server.py",
+      "package_path": "app/server.py",
+      "sha256": "254e8d6b5d31c8a14accd238b6c72c52fa5cc6e37f106f409fcec9d834df48c7"
+    },
+    {
+      "source": "app/unified_engine.py",
+      "package_path": "app/unified_engine.py",
+      "sha256": "40575df026224923fd884b85013fec4f995504384b587eea4d6e5641cf9621d6"
+    },
+    {
+      "source": "app/app.js",
+      "package_path": "app/app.js",
+      "sha256": "ab03b85a7610f1008620b59dd48f6291e963f27807628b33baf49f417a2e4590"
+    },
+    {
+      "source": "app/index.html",
+      "package_path": "app/index.html",
+      "sha256": "e1bad6bbd18e77fd732f152ed496984c51c5b97728aeb98ce55d6a05fd71c320"
+    },
+    {
+      "source": "app/main_worker.py",
+      "package_path": "app/main_worker.py",
+      "sha256": "a51142fdc262db9d23ae8295592930bf11d6ce2fa11f201fa80621a1fc3030af"
+    },
+    {
+      "source": "app/text_transcription.py",
+      "package_path": "app/text_transcription.py",
+      "sha256": "26d05765d642e1d2a2500e33d178ae10917c8225a0c43775e5763de5544083ec"
+    },
+    {
+      "source": "tools/portable_launcher.py",
+      "package_path": "portable.py",
+      "sha256": "fa37e2190a507ca00d7add9b9d163120011fbaf5ce71af4dae2fb86a2de48938"
+    },
+    {
+      "source": "tools/verify_windows_package.py",
+      "package_path": "verify_package.py",
+      "sha256": "9115e79bb33fed00a91b8b988791f6da1d94035580d84bcca07e7e069cec6a08"
+    },
+    {
+      "source": "tools/build_windows_delivery.py",
+      "package_path": "delivery/build_tools/build_windows_delivery.py",
+      "sha256": "b4a68c3e077be0fc885c7b9eb34ccb31c53c1b82b063ec42f0010282b08ed4d8"
+    }
+  ]
+}
