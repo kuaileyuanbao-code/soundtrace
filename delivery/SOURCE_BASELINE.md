@@ -1,6 +1,6 @@
 # 源码清单与导出
 
-首个真实基线创建于 2026-10-15，当前说明更新于 2026-10-20。私有源码仓库为 https://github.com/kuaileyuanbao-code/soundtrace 。
+首个真实基线创建于 2026-10-15，当前说明更新于 2026-10-21。参赛源码仓库 https://github.com/kuaileyuanbao-code/soundtrace 已公开，评委可直接查看源码和真实提交历史，也可下载或克隆仓库。
 
 ## 文件组织
 

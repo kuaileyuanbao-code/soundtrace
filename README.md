@@ -40,4 +40,4 @@ node app/test_modes_frontend.cjs
 - [Review 配置与交付范围](delivery/REVIEW_STATUS.md)
 - [应用与历史实验说明](app/README.md)
 
-源码仓库当前保持私有，评审访问权限由团队安排。
+参赛源码及真实提交历史已在 GitHub 公开，评委可直接查看、下载或克隆本仓库。

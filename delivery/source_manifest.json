@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "observed_at": "2026-10-20T19:01:40+08:00",
+  "observed_at": "2026-10-21T23:44:13+08:00",
   "scope": "Source-only baseline; not a runtime package; no private recordings or model weights",
   "manifest_self_hash_omitted": true,
   "files": [
@@ -19,8 +19,8 @@
     {
       "path": "README.md",
       "category": "source_governance",
-      "bytes": 2618,
-      "sha256": "12ab4fd1343bcc0b74bae77c0ae666c0a008087e83eb8673447edf4638edb85d"
+      "bytes": 2656,
+      "sha256": "e6c0a50592238b46e58e490d09f39cd7a16a6f9ab49369a5af14fd848c264448"
     },
     {
       "path": "app/PERFORMANCE.md",
@@ -217,8 +217,8 @@
     {
       "path": "delivery/DEVELOPMENT_HISTORY.md",
       "category": "source_governance",
-      "bytes": 1873,
-      "sha256": "8d7b0af263855f4edce04d1b1ca1ce09c0fac3a0556bc525e9f25545c6af887c"
+      "bytes": 1985,
+      "sha256": "14a64e8327cedbf398a62fe888f4aff381f2737ad80be5547d50f5a29b38a2f7"
     },
     {
       "path": "delivery/REVIEW_STATUS.md",
@@ -229,8 +229,8 @@
     {
       "path": "delivery/SOURCE_BASELINE.md",
       "category": "source_governance",
-      "bytes": 2009,
-      "sha256": "b1125ee27057816efa8f03c4feeb30c5b875a308209d7c95ce2a327aa7eef1ab"
+      "bytes": 2096,
+      "sha256": "f83a9b5230e78f26ece0d1d07af26d317929c85170d91b1c23206323bef63e3c"
     },
     {
       "path": "delivery/THIRD_PARTY.md",
